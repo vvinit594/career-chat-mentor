@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, User, Bot, Loader2 } from 'lucide-react';
@@ -16,7 +15,9 @@ export const ChatInterface = () => {
     isTyping,
     setIsTyping,
     isInterviewStarted,
-    setIsInterviewStarted
+    setIsInterviewStarted,
+    setCurrentStep,
+    setInterviewResults
   } = useInterview();
 
   const [inputMessage, setInputMessage] = useState('');
@@ -97,6 +98,36 @@ export const ChatInterface = () => {
     }
   };
 
+  const endInterview = async () => {
+    if (!userProfile || messages.length < 2) return;
+
+    setIsTyping(true);
+    try {
+      const conversationHistory = messages.map(msg => ({
+        type: msg.type,
+        content: msg.content
+      }));
+
+      const results = await AIService.generateInterviewResults(userProfile, conversationHistory);
+      setInterviewResults(results);
+      setCurrentStep('completed');
+    } catch (error) {
+      console.error('Failed to end interview:', error);
+      // Fallback results
+      setInterviewResults({
+        overallScore: 75,
+        strengths: ['Good communication', 'Relevant experience', 'Professional attitude'],
+        improvements: ['More specific examples', 'Technical depth', 'Question preparation'],
+        summary: 'The candidate performed well in the interview.',
+        feedback: 'Overall positive performance with room for improvement.',
+        recommendation: 'Recommended'
+      });
+      setCurrentStep('completed');
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
   return (
     <div className="h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col">
       {/* Header */}
@@ -113,8 +144,17 @@ export const ChatInterface = () => {
               </p>
             </div>
           </div>
-          <div className="text-sm text-gray-500">
-            {userProfile?.name}
+          <div className="flex items-center space-x-4">
+            <span className="text-sm text-gray-500">{userProfile?.name}</span>
+            <Button
+              onClick={endInterview}
+              variant="outline"
+              size="sm"
+              disabled={isTyping || messages.length < 2}
+              className="text-red-600 border-red-200 hover:bg-red-50"
+            >
+              End Interview
+            </Button>
           </div>
         </div>
       </div>

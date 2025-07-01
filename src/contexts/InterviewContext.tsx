@@ -17,6 +17,15 @@ interface Message {
   timestamp: Date;
 }
 
+interface InterviewResults {
+  overallScore: number;
+  strengths: string[];
+  improvements: string[];
+  summary: string;
+  feedback: string;
+  recommendation: string;
+}
+
 interface InterviewContextType {
   userProfile: UserProfile | null;
   setUserProfile: (profile: UserProfile) => void;
@@ -28,6 +37,8 @@ interface InterviewContextType {
   setIsTyping: (typing: boolean) => void;
   currentStep: 'onboarding' | 'interview' | 'completed';
   setCurrentStep: (step: 'onboarding' | 'interview' | 'completed') => void;
+  interviewResults: InterviewResults | null;
+  setInterviewResults: (results: InterviewResults) => void;
 }
 
 const InterviewContext = createContext<InterviewContextType | undefined>(undefined);
@@ -46,6 +57,7 @@ export const InterviewProvider = ({ children }: { children: ReactNode }) => {
   const [isInterviewStarted, setIsInterviewStarted] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [currentStep, setCurrentStep] = useState<'onboarding' | 'interview' | 'completed'>('onboarding');
+  const [interviewResults, setInterviewResults] = useState<InterviewResults | null>(null);
 
   const addMessage = (message: Omit<Message, 'id' | 'timestamp'>) => {
     const newMessage: Message = {
@@ -69,6 +81,8 @@ export const InterviewProvider = ({ children }: { children: ReactNode }) => {
         setIsTyping,
         currentStep,
         setCurrentStep,
+        interviewResults,
+        setInterviewResults,
       }}
     >
       {children}
