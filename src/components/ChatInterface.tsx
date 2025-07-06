@@ -129,29 +129,29 @@ export const ChatInterface = () => {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex flex-col">
+    <div className="h-screen bg-gradient-to-br from-purple-900 via-purple-700 to-indigo-800 flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
+      <div className="bg-white/10 backdrop-blur-md border-b border-white/20 px-6 py-4 shadow-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
               <Bot className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-gray-800">AI Interviewer</h1>
-              <p className="text-sm text-gray-500">
+              <h1 className="text-lg font-semibold text-white">AI Interviewer</h1>
+              <p className="text-sm text-purple-200">
                 Interviewing for {userProfile?.jobRole}
               </p>
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-500">{userProfile?.name}</span>
+            <span className="text-sm text-purple-200">{userProfile?.name}</span>
             <Button
               onClick={endInterview}
               variant="outline"
               size="sm"
               disabled={isTyping || messages.length < 2}
-              className="text-red-600 border-red-200 hover:bg-red-50"
+              className="text-red-400 border-red-400/50 hover:bg-red-500/20 bg-white/10"
             >
               End Interview
             </Button>
@@ -171,23 +171,23 @@ export const ChatInterface = () => {
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div className={`flex items-start space-x-3 max-w-3xl ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg ${
                   message.type === 'user' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-600 text-white'
+                    ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white' 
+                    : 'bg-gradient-to-r from-gray-600 to-gray-700 text-white'
                 }`}>
                   {message.type === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                 </div>
-                <Card className={`p-4 shadow-sm ${
+                <Card className={`p-4 shadow-lg backdrop-blur-sm ${
                   message.type === 'user' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-white text-gray-800'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-purple-400/30' 
+                    : 'bg-white/10 text-white border-white/20'
                 }`}>
                   <p className="text-sm leading-relaxed whitespace-pre-wrap">
                     {message.content}
                   </p>
                   <div className={`text-xs mt-2 ${
-                    message.type === 'user' ? 'text-blue-100' : 'text-gray-500'
+                    message.type === 'user' ? 'text-purple-100' : 'text-purple-200'
                   }`}>
                     {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
@@ -205,13 +205,13 @@ export const ChatInterface = () => {
             className="flex justify-start"
           >
             <div className="flex items-start space-x-3 max-w-3xl">
-              <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-gray-600 to-gray-700 rounded-full flex items-center justify-center shadow-lg">
                 <Bot className="w-4 h-4 text-white" />
               </div>
-              <Card className="p-4 bg-white shadow-sm">
+              <Card className="p-4 bg-white/10 backdrop-blur-sm shadow-lg border-white/20">
                 <div className="flex items-center space-x-2">
-                  <Loader2 className="w-4 h-4 animate-spin text-gray-500" />
-                  <span className="text-sm text-gray-500">AI is thinking...</span>
+                  <Loader2 className="w-4 h-4 animate-spin text-purple-300" />
+                  <span className="text-sm text-purple-200">AI is thinking...</span>
                 </div>
               </Card>
             </div>
@@ -222,7 +222,7 @@ export const ChatInterface = () => {
       </div>
 
       {/* Input Area */}
-      <div className="bg-white border-t border-gray-200 px-6 py-4">
+      <div className="bg-white/10 backdrop-blur-md border-t border-white/20 px-6 py-4">
         <div className="flex items-center space-x-3">
           <Input
             value={inputMessage}
@@ -230,12 +230,12 @@ export const ChatInterface = () => {
             onKeyPress={handleKeyPress}
             placeholder="Type your response..."
             disabled={isTyping}
-            className="flex-1 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+            className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-purple-200 focus:border-purple-400"
           />
           <Button
             onClick={sendMessage}
             disabled={!inputMessage.trim() || isTyping}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-6 shadow-lg"
           >
             <Send className="w-4 h-4" />
           </Button>
